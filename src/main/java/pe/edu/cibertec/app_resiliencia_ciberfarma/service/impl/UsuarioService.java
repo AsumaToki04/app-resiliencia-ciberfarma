@@ -1,5 +1,6 @@
 package pe.edu.cibertec.app_resiliencia_ciberfarma.service.impl;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pe.edu.cibertec.app_resiliencia_ciberfarma.model.Usuario;
@@ -15,16 +16,16 @@ public class UsuarioService implements IUsuarioService {
     private final UsuarioRepository usuarioRepository;
 
     @Override
-    public Usuario obtenerPorId(Long id) {
-        Usuario usuario = null;
+    @CircuitBreaker(name = "ciberfarma", fallbackMethod = "fallbackUsuarioNoEncontrado")
+    public String obtenerPorId(Long id) {
         Optional<Usuario> optional = usuarioRepository.findById(id);
         if(optional.isPresent())
-            usuario = optional.get();
-        return usuario;
+            return optional.get().toString();
+        else
+            throw new RuntimeException("Usuario no encontrado.");
     }
 
-    public Usuario fallbackObtenerUsuario(Long id, Throwable throwable) {
-        System.out.println("Usuario no encontrado.");
-        return new Usuario();
+    public String fallbackUsuarioNoEncontrado(Long id, Throwable throwable) {
+        return "Usuario con ID " + id + " no encontrado";
     }
 }
