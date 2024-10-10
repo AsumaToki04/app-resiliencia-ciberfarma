@@ -20,7 +20,7 @@ public class Usuario {
     private String apellidos;
 
     @Column(name = "usr_usua")
-    private String username;
+    private String email;
 
     @Column(name = "cla_usua")
     private String password;
@@ -34,4 +34,23 @@ public class Usuario {
     @ManyToOne
     @JoinColumn(name = "idtipo")
     private Tipo tipo;
+
+    @Override
+    public String toString() {
+        return "¡Usuario Encontrado!\n\n" +
+                "ID.................: " + getId() + "\n" +
+                "Nombres............: " + getNombres() + "\n" +
+                "Apellidos..........: " + getApellidos() + "\n" +
+                "Email..............: " + getEmail() + "\n" +
+                "Fecha Nacimiento...: " + getFecNac() + "\n" +
+                "Estado.............: " + getNombreEstado() + "\n" +
+                "Tipo...............: " + getTipo().getDescripcion();
+    }
+
+    public String getNombreEstado() {
+        if(getEstado() == 1)
+            return "Activo";
+        else
+            return "Inactivo";
+    }
 }
