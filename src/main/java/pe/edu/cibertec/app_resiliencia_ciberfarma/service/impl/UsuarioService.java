@@ -26,6 +26,6 @@ public class UsuarioService implements IUsuarioService {
     }
 
     public String fallbackUsuarioNoEncontrado(Long id, Throwable throwable) {
-        return "Usuario con ID " + id + " no encontrado";
+        return "Usuario con ID " + id + " no encontrado.";
     }
 }
